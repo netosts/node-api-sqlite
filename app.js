@@ -4,14 +4,10 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
-
-// Importar rotas MVC
+var indexRouter = require("./src/routes/index");
 var produtosRouter = require("./src/routes/produtoRoutes");
 var clientesRouter = require("./src/routes/clienteRoutes");
 
-// Inicializar banco de dados
 const { initializeDatabase } = require("./src/config/database");
 
 var app = express();
@@ -26,7 +22,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 app.use("/produtos", produtosRouter);
 app.use("/clientes", clientesRouter);
 

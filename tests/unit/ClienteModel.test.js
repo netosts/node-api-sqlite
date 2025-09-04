@@ -50,7 +50,7 @@ describe("ClienteModel", () => {
     });
   });
 
-  describe("findAll", () => {
+  describe("getAll", () => {
     beforeEach(async () => {
       // Criar clientes de teste
       await ClienteModel.create(clienteFixtures.clienteValido);
@@ -65,7 +65,7 @@ describe("ClienteModel", () => {
     });
 
     test("deve retornar todos os clientes sem filtros", async () => {
-      const clientes = await ClienteModel.findAll();
+      const clientes = await ClienteModel.getAll();
 
       expect(clientes).toHaveLength(3);
       expect(clientes[0]).toHaveProperty("id");
@@ -74,14 +74,14 @@ describe("ClienteModel", () => {
     });
 
     test("deve filtrar por nome", async () => {
-      const clientes = await ClienteModel.findAll({ search: "João" });
+      const clientes = await ClienteModel.getAll({ search: "João" });
 
       expect(clientes).toHaveLength(1);
       expect(clientes[0].nome).toBe("João Silva");
     });
 
     test("deve filtrar por email", async () => {
-      const clientes = await ClienteModel.findAll({
+      const clientes = await ClienteModel.getAll({
         search: "maria@teste.com",
       });
 
@@ -90,20 +90,20 @@ describe("ClienteModel", () => {
     });
 
     test("deve aplicar limite e offset", async () => {
-      const clientes = await ClienteModel.findAll({ limit: 2, offset: 1 });
+      const clientes = await ClienteModel.getAll({ limit: 2, offset: 1 });
 
       expect(clientes).toHaveLength(2);
     });
 
     test("deve buscar de forma case-insensitive", async () => {
-      const clientes = await ClienteModel.findAll({ search: "JOÃO" });
+      const clientes = await ClienteModel.getAll({ search: "JOÃO" });
 
       expect(clientes).toHaveLength(1);
       expect(clientes[0].nome).toBe("João Silva");
     });
   });
 
-  describe("findById", () => {
+  describe("find", () => {
     let clienteId;
 
     beforeEach(async () => {
@@ -112,7 +112,7 @@ describe("ClienteModel", () => {
     });
 
     test("deve encontrar cliente por ID", async () => {
-      const cliente = await ClienteModel.findById(clienteId);
+      const cliente = await ClienteModel.find(clienteId);
 
       expect(cliente).toBeDefined();
       expect(cliente.id).toBe(clienteId);
@@ -120,7 +120,7 @@ describe("ClienteModel", () => {
     });
 
     test("deve retornar null para ID inexistente", async () => {
-      const cliente = await ClienteModel.findById(999);
+      const cliente = await ClienteModel.find(999);
 
       expect(cliente).toBeNull();
     });
@@ -178,7 +178,7 @@ describe("ClienteModel", () => {
     });
 
     test("deve atualizar apenas campos fornecidos", async () => {
-      const originalCliente = await ClienteModel.findById(clienteId);
+      const originalCliente = await ClienteModel.find(clienteId);
 
       const cliente = await ClienteModel.update(clienteId, {
         nome: "Nome Atualizado",
@@ -209,7 +209,7 @@ describe("ClienteModel", () => {
       expect(resultado).toBe(true);
 
       // Verificar se foi realmente deletado
-      const cliente = await ClienteModel.findById(clienteId);
+      const cliente = await ClienteModel.find(clienteId);
       expect(cliente).toBeNull();
     });
 

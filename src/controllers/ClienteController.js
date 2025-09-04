@@ -48,17 +48,17 @@ class ClienteController {
    * @param {Object} req - Objeto de requisição
    * @param {Object} res - Objeto de resposta
    */
-  static async findAll(req, res) {
+  static async getAll(req, res) {
     try {
       // Validar parâmetros usando o validator
-      const validation = ClienteValidator.validateFindAll(req);
+      const validation = ClienteValidator.validateGetAll(req);
       if (!validation.isValid) {
         return res.status(validation.error.status).json({
           error: validation.error.message,
         });
       }
 
-      const result = await ClienteModel.findAll(validation.data);
+      const result = await ClienteModel.getAll(validation.data);
 
       res.json(result);
     } catch (error) {
@@ -74,17 +74,17 @@ class ClienteController {
    * @param {Object} req - Objeto de requisição
    * @param {Object} res - Objeto de resposta
    */
-  static async findById(req, res) {
+  static async find(req, res) {
     try {
       // Validar ID usando o validator
-      const validation = ClienteValidator.validateFindById(req);
+      const validation = ClienteValidator.validateFind(req);
       if (!validation.isValid) {
         return res.status(validation.error.status).json({
           error: validation.error.message,
         });
       }
 
-      const cliente = await ClienteModel.findById(validation.data.id);
+      const cliente = await ClienteModel.find(validation.data.id);
 
       if (!cliente) {
         return res.status(404).json({
@@ -119,7 +119,7 @@ class ClienteController {
       const { id, ...dadosCliente } = validation.data;
 
       // Verificar se cliente existe
-      const clienteExistente = await ClienteModel.findById(id);
+      const clienteExistente = await ClienteModel.find(id);
       if (!clienteExistente) {
         return res.status(404).json({
           error: "Cliente não encontrado",
@@ -164,7 +164,7 @@ class ClienteController {
       }
 
       // Verificar se cliente existe
-      const cliente = await ClienteModel.findById(validation.data.id);
+      const cliente = await ClienteModel.find(validation.data.id);
       if (!cliente) {
         return res.status(404).json({
           error: "Cliente não encontrado",
@@ -185,7 +185,5 @@ class ClienteController {
     }
   }
 }
-
-module.exports = ClienteController;
 
 module.exports = ClienteController;

@@ -40,17 +40,17 @@ class ProdutoController {
    * @param {Object} req - Objeto de requisição
    * @param {Object} res - Objeto de resposta
    */
-  static async findAll(req, res) {
+  static async getAll(req, res) {
     try {
       // Validar parâmetros usando o validator
-      const validation = ProdutoValidator.validateFindAll(req);
+      const validation = ProdutoValidator.validateGetAll(req);
       if (!validation.isValid) {
         return res.status(validation.error.status).json({
           error: validation.error.message,
         });
       }
 
-      const result = await ProdutoModel.findAll(validation.data);
+      const result = await ProdutoModel.getAll(validation.data);
 
       res.json(result);
     } catch (error) {
@@ -66,17 +66,17 @@ class ProdutoController {
    * @param {Object} req - Objeto de requisição
    * @param {Object} res - Objeto de resposta
    */
-  static async findById(req, res) {
+  static async find(req, res) {
     try {
       // Validar ID usando o validator
-      const validation = ProdutoValidator.validateFindById(req);
+      const validation = ProdutoValidator.validateFind(req);
       if (!validation.isValid) {
         return res.status(validation.error.status).json({
           error: validation.error.message,
         });
       }
 
-      const produto = await ProdutoModel.findById(validation.data.id);
+      const produto = await ProdutoModel.find(validation.data.id);
 
       if (!produto) {
         return res.status(404).json({
@@ -111,7 +111,7 @@ class ProdutoController {
       const { id, ...dadosProduto } = validation.data;
 
       // Verificar se produto existe
-      const produtoExistente = await ProdutoModel.findById(id);
+      const produtoExistente = await ProdutoModel.find(id);
       if (!produtoExistente) {
         return res.status(404).json({
           error: "Produto não encontrado",
@@ -148,7 +148,7 @@ class ProdutoController {
       }
 
       // Verificar se produto existe
-      const produto = await ProdutoModel.findById(validation.data.id);
+      const produto = await ProdutoModel.find(validation.data.id);
       if (!produto) {
         return res.status(404).json({
           error: "Produto não encontrado",

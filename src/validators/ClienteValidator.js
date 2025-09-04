@@ -52,7 +52,7 @@ class ClienteValidator extends BaseValidator {
     });
   }
 
-  static validateFindAll(req) {
+  static validateGetAll(req) {
     const { page = 1, limit = 10, search = "" } = req.query;
 
     if (!this.isValidNumber(page) || parseInt(page) < 1) {

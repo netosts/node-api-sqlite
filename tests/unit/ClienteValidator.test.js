@@ -121,13 +121,13 @@ describe("ClienteValidator", () => {
     });
   });
 
-  describe("validateFindById", () => {
+  describe("validateFind", () => {
     test("deve validar ID correto", () => {
       const req = {
         params: { id: "456" },
       };
 
-      const result = ClienteValidator.validateFindById(req);
+      const result = ClienteValidator.validateFind(req);
 
       expect(result.isValid).toBe(true);
       expect(result.data.id).toBe(456);
@@ -138,20 +138,20 @@ describe("ClienteValidator", () => {
         params: { id: "abc" },
       };
 
-      const result = ClienteValidator.validateFindById(req);
+      const result = ClienteValidator.validateFind(req);
 
       expect(result.isValid).toBe(false);
       expect(result.error.message).toContain("ID deve ser um número válido");
     });
   });
 
-  describe("validateFindAll", () => {
+  describe("validateGetAll", () => {
     test("deve validar parâmetros padrão", () => {
       const req = {
         query: {},
       };
 
-      const result = ClienteValidator.validateFindAll(req);
+      const result = ClienteValidator.validateGetAll(req);
 
       expect(result.isValid).toBe(true);
       expect(result.data).toEqual({
@@ -168,7 +168,7 @@ describe("ClienteValidator", () => {
         },
       };
 
-      const result = ClienteValidator.validateFindAll(req);
+      const result = ClienteValidator.validateGetAll(req);
 
       expect(result.isValid).toBe(true);
       expect(result.data.search).toBe("João");
@@ -179,7 +179,7 @@ describe("ClienteValidator", () => {
         query: { page: "-1" },
       };
 
-      const result = ClienteValidator.validateFindAll(req);
+      const result = ClienteValidator.validateGetAll(req);
 
       expect(result.isValid).toBe(false);
       expect(result.error.message).toContain("maior que zero");

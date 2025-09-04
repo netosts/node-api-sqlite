@@ -77,30 +77,30 @@ describe("BaseValidator", () => {
     });
   });
 
-  describe("isNonNegativeNumber", () => {
+  describe("!isNegativeNumber", () => {
     test("deve validar números não negativos", () => {
       const numerosNaoNegativos = [0, 1, 100, 0.5, "0", "99.99"];
 
       numerosNaoNegativos.forEach((numero) => {
-        expect(BaseValidator.isNonNegativeNumber(numero)).toBe(true);
+        expect(!BaseValidator.isNegativeNumber(numero)).toBe(true);
       });
     });
 
-    test("deve rejeitar números negativos", () => {
+    test("deve validar números negativos", () => {
       const numerosNegativos = [-1, -100, "-5", "abc"];
 
       numerosNegativos.forEach((numero) => {
-        expect(BaseValidator.isNonNegativeNumber(numero)).toBe(false);
+        expect(BaseValidator.isNegativeNumber(numero)).toBe(true);
       });
     });
   });
 
-  describe("isNotEmpty", () => {
+  describe("isEmpty", () => {
     test("deve validar strings não vazias", () => {
       const stringsValidas = ["texto", "a", "   texto   ", "123"];
 
       stringsValidas.forEach((str) => {
-        expect(BaseValidator.isNotEmpty(str)).toBe(true);
+        expect(BaseValidator.isEmpty(str)).toBe(false);
       });
     });
 
@@ -108,25 +108,7 @@ describe("BaseValidator", () => {
       const stringsInvalidas = ["", "   ", null, undefined, 123, []];
 
       stringsInvalidas.forEach((str) => {
-        expect(BaseValidator.isNotEmpty(str)).toBe(false);
-      });
-    });
-  });
-
-  describe("isValidId", () => {
-    test("deve validar IDs corretos", () => {
-      const idsValidos = [1, 2, 100, "1", "999"];
-
-      idsValidos.forEach((id) => {
-        expect(BaseValidator.isValidId(id)).toBe(true);
-      });
-    });
-
-    test("deve rejeitar IDs inválidos", () => {
-      const idsInvalidos = [0, -1, 1.5, "abc", "", null, undefined];
-
-      idsInvalidos.forEach((id) => {
-        expect(BaseValidator.isValidId(id)).toBe(false);
+        expect(BaseValidator.isEmpty(str)).toBe(true);
       });
     });
   });

@@ -11,6 +11,26 @@ class TestDatabase {
   }
 
   /**
+   * Configurar banco de dados para testes
+   */
+  async setup() {
+    await this.connect();
+    await this.createTables();
+  }
+
+  /**
+   * Limpar e fechar conexão
+   */
+  async teardown() {
+    await this.disconnect();
+    // Remover arquivo de banco de teste
+    const fs = require("fs");
+    if (fs.existsSync(this.dbPath)) {
+      fs.unlinkSync(this.dbPath);
+    }
+  }
+
+  /**
    * Conectar ao banco de teste
    */
   async connect() {

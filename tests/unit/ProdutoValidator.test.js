@@ -120,13 +120,13 @@ describe("ProdutoValidator", () => {
     });
   });
 
-  describe("validateFindById", () => {
+  describe("validateFind", () => {
     test("deve validar ID correto", () => {
       const req = {
         params: { id: "123" },
       };
 
-      const result = ProdutoValidator.validateFindById(req);
+      const result = ProdutoValidator.validateFind(req);
 
       expect(result.isValid).toBe(true);
       expect(result.data.id).toBe(123);
@@ -137,20 +137,20 @@ describe("ProdutoValidator", () => {
         params: { id: "invalid" },
       };
 
-      const result = ProdutoValidator.validateFindById(req);
+      const result = ProdutoValidator.validateFind(req);
 
       expect(result.isValid).toBe(false);
       expect(result.error.message).toContain("ID deve ser um número válido");
     });
   });
 
-  describe("validateFindAll", () => {
+  describe("validateGetAll", () => {
     test("deve validar parâmetros padrão", () => {
       const req = {
         query: {},
       };
 
-      const result = ProdutoValidator.validateFindAll(req);
+      const result = ProdutoValidator.validateGetAll(req);
 
       expect(result.isValid).toBe(true);
       expect(result.data).toEqual({
@@ -169,7 +169,7 @@ describe("ProdutoValidator", () => {
         },
       };
 
-      const result = ProdutoValidator.validateFindAll(req);
+      const result = ProdutoValidator.validateGetAll(req);
 
       expect(result.isValid).toBe(true);
       expect(result.data).toEqual({
@@ -184,7 +184,7 @@ describe("ProdutoValidator", () => {
         query: { page: "0" },
       };
 
-      const result = ProdutoValidator.validateFindAll(req);
+      const result = ProdutoValidator.validateGetAll(req);
 
       expect(result.isValid).toBe(false);
       expect(result.error.message).toContain(
@@ -197,7 +197,7 @@ describe("ProdutoValidator", () => {
         query: { limit: "101" },
       };
 
-      const result = ProdutoValidator.validateFindAll(req);
+      const result = ProdutoValidator.validateGetAll(req);
 
       expect(result.isValid).toBe(false);
       expect(result.error.message).toContain("entre 1 e 100");

@@ -52,7 +52,7 @@ describe("ProdutoModel", () => {
     });
   });
 
-  describe("findAll", () => {
+  describe("getAll", () => {
     beforeEach(async () => {
       // Criar produtos de teste
       await ProdutoModel.create(produtoFixtures.produtoValido);
@@ -69,7 +69,7 @@ describe("ProdutoModel", () => {
     });
 
     test("deve retornar todos os produtos sem filtros", async () => {
-      const produtos = await ProdutoModel.findAll();
+      const produtos = await ProdutoModel.getAll();
 
       expect(produtos).toHaveLength(3);
       expect(produtos[0]).toHaveProperty("id");
@@ -78,27 +78,27 @@ describe("ProdutoModel", () => {
     });
 
     test("deve filtrar por nome", async () => {
-      const produtos = await ProdutoModel.findAll({ search: "Produto B" });
+      const produtos = await ProdutoModel.getAll({ search: "Produto B" });
 
       expect(produtos).toHaveLength(1);
       expect(produtos[0].nome).toBe("Produto B");
     });
 
     test("deve filtrar por categoria", async () => {
-      const produtos = await ProdutoModel.findAll({ categoria: "Categoria B" });
+      const produtos = await ProdutoModel.getAll({ categoria: "Categoria B" });
 
       expect(produtos).toHaveLength(1);
       expect(produtos[0].categoria).toBe("Categoria B");
     });
 
     test("deve aplicar limite e offset", async () => {
-      const produtos = await ProdutoModel.findAll({ limit: 2, offset: 1 });
+      const produtos = await ProdutoModel.getAll({ limit: 2, offset: 1 });
 
       expect(produtos).toHaveLength(2);
     });
   });
 
-  describe("findById", () => {
+  describe("find", () => {
     let produtoId;
 
     beforeEach(async () => {
@@ -107,7 +107,7 @@ describe("ProdutoModel", () => {
     });
 
     test("deve encontrar produto por ID", async () => {
-      const produto = await ProdutoModel.findById(produtoId);
+      const produto = await ProdutoModel.find(produtoId);
 
       expect(produto).toBeDefined();
       expect(produto.id).toBe(produtoId);
@@ -115,7 +115,7 @@ describe("ProdutoModel", () => {
     });
 
     test("deve retornar null para ID inexistente", async () => {
-      const produto = await ProdutoModel.findById(999);
+      const produto = await ProdutoModel.find(999);
 
       expect(produto).toBeNull();
     });
@@ -142,7 +142,7 @@ describe("ProdutoModel", () => {
     });
 
     test("deve atualizar apenas campos fornecidos", async () => {
-      const originalProduto = await ProdutoModel.findById(produtoId);
+      const originalProduto = await ProdutoModel.find(produtoId);
 
       const produto = await ProdutoModel.update(produtoId, {
         nome: "Nome Atualizado",
@@ -174,7 +174,7 @@ describe("ProdutoModel", () => {
       expect(resultado).toBe(true);
 
       // Verificar se foi realmente deletado
-      const produto = await ProdutoModel.findById(produtoId);
+      const produto = await ProdutoModel.find(produtoId);
       expect(produto).toBeNull();
     });
 

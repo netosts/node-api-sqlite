@@ -1,4 +1,4 @@
-const ProdutoValidator = require("../../src/validators/ProdutoValidator");
+const ProdutoValidator = require("../../validators/ProdutoValidator");
 const produtoFixtures = require("../fixtures/produtoFixtures");
 
 describe("ProdutoValidator", () => {

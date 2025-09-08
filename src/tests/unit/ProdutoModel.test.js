@@ -1,4 +1,4 @@
-const ProdutoModel = require("../../src/models/ProdutoModel");
+const ProdutoModel = require("../../models/produtoModel");
 const produtoFixtures = require("../fixtures/produtoFixtures");
 const TestDatabase = require("../helpers/TestDatabase");
 

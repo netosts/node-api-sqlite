@@ -1,4 +1,4 @@
-const BaseValidator = require("../../src/validators/BaseValidator");
+const BaseValidator = require("../../validators/baseValidator");
 
 describe("BaseValidator", () => {
   describe("isValidEmail", () => {

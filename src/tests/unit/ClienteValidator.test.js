@@ -1,4 +1,4 @@
-const ClienteValidator = require("../../src/validators/ClienteValidator");
+const ClienteValidator = require("../../validators/ClienteValidator");
 const clienteFixtures = require("../fixtures/clienteFixtures");
 
 describe("ClienteValidator", () => {

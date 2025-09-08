@@ -1,8 +1,8 @@
 {
   "testEnvironment": "node",
   "testMatch": [
-    "**/tests/**/*.test.js",
-    "**/tests/**/*.spec.js"
+    "**/src/tests/**/*.test.js",
+    "**/src/tests/**/*.spec.js"
   ],
   "collectCoverageFrom": [
     "src/**/*.js",
@@ -16,7 +16,7 @@
     "html"
   ],
   "setupFilesAfterEnv": [
-    "<rootDir>/tests/setup.js"
+    "<rootDir>/src/tests/setup.js"
   ],
   "testTimeout": 10000,
   "verbose": true

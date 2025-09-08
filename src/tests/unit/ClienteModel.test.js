@@ -1,4 +1,4 @@
-const ClienteModel = require("../../src/models/ClienteModel");
+const ClienteModel = require("../../models/ClienteModel");
 const clienteFixtures = require("../fixtures/clienteFixtures");
 const TestDatabase = require("../helpers/TestDatabase");
 

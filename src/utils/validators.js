@@ -1,4 +1,4 @@
-class BaseValidator {
+class UtilValidator {
   static isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -9,11 +9,11 @@ class BaseValidator {
   }
 
   static isPositiveNumber(value) {
-    return BaseValidator.isValidNumber(value) && parseFloat(value) > 0;
+    return UtilValidator.isValidNumber(value) && parseFloat(value) > 0;
   }
 
   static isNegativeNumber(value) {
-    return BaseValidator.isValidNumber(value) && parseFloat(value) < 0;
+    return UtilValidator.isValidNumber(value) && parseFloat(value) < 0;
   }
 
   static isEmpty(str) {
@@ -38,4 +38,4 @@ class BaseValidator {
   }
 }
 
-module.exports = BaseValidator;
+module.exports = UtilValidator;

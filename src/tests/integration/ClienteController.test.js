@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../../app");
+const app = require("../../../app");
 const TestDatabase = require("../helpers/TestDatabase");
 const ApiTestHelper = require("../helpers/ApiTestHelper");
 const clienteFixtures = require("../fixtures/clienteFixtures");

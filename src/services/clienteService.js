@@ -1,6 +1,4 @@
-const BaseService = require("./baseService");
 const ClienteRepository = require("../repositories/clienteRepository");
-const ClienteValidator = require("../validators/clienteValidator");
 const {
   ValidationError,
   NotFoundError,
@@ -8,49 +6,27 @@ const {
   BadRequestError,
 } = require("../utils/errors");
 
-/**
- * Serviço para regras de negócio relacionadas a clientes
- */
-class ClienteService extends BaseService {
+class ClienteService {
   constructor() {
-    super(new ClienteRepository(), ClienteValidator);
+    this.clienteRepository = new ClienteRepository();
   }
 
-  /**
-   * Criar um novo cliente
-   * @param {Object} clienteData - Dados do cliente
-   * @returns {Promise} - Promise com o resultado da operação
-   */
-  async create(clienteData) {
-    // Validar dados
-    const validation = this.validator.validateCreate({ body: clienteData });
-    if (!validation.isValid) {
-      throw new ValidationError(validation.error.message);
-    }
-
-    // Verificar se email já existe
-    const emailExists = await this.repository.emailExists(
-      validation.data.email
+  async create(req) {
+    const emailExists = await this.clienteRepository.emailExists(
+      req.body.email
     );
     if (emailExists) {
       throw new ConflictError("Este email já está cadastrado");
     }
 
-    // Criar cliente
-    return await this.repository.create(validation.data);
+    return await this.clienteRepository.create(req.body);
   }
 
-  /**
-   * Atualizar cliente por ID
-   * @param {number} id - ID do cliente
-   * @param {Object} clienteData - Dados atualizados do cliente
-   * @returns {Promise} - Promise com o resultado da operação
-   */
-  async update(id, clienteData) {
+  async update(id, req) {
     // Validar dados
     const validation = this.validator.validateUpdate({
       params: { id },
-      body: clienteData,
+      body: req.body,
     });
     if (!validation.isValid) {
       throw new ValidationError(validation.error.message);

@@ -1,9 +1,5 @@
 const { db } = require("../config/database");
 
-/**
- * Classe base para repositórios
- * Responsável apenas pelas operações de acesso ao banco de dados
- */
 class BaseRepository {
   /**
    * @param {string} tableName - Nome da tabela
@@ -19,7 +15,7 @@ class BaseRepository {
    * @param {Object} options - Opções de busca
    * @returns {Promise} - Promise com os registros encontrados
    */
-  async findAll(options = {}) {
+  async getAll(options = {}) {
     return new Promise((resolve, reject) => {
       const {
         page = 1,
@@ -94,7 +90,7 @@ class BaseRepository {
    * @param {number} id - ID do registro
    * @returns {Promise} - Promise com o registro encontrado
    */
-  async findById(id) {
+  async find(id) {
     return new Promise((resolve, reject) => {
       const sql = `SELECT * FROM ${this.tableName} WHERE id = ?`;
 
@@ -134,7 +130,7 @@ class BaseRepository {
    * @param {any} value - Valor a ser buscado
    * @returns {Promise} - Promise com os registros encontrados
    */
-  async findManyByField(field, value) {
+  async getByField(field, value) {
     return new Promise((resolve, reject) => {
       const sql = `SELECT * FROM ${this.tableName} WHERE ${field} = ?`;
 

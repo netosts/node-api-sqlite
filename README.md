@@ -169,122 +169,6 @@ node-api-sqlite/
 └── README.md                # Este arquivo
 ```
 
-## 🏗️ Arquitetura MVC + Validators
-
-### **Model (Modelo)**
-
-- **Localização**: `src/models/`
-- **Responsabilidade**: Gerenciar dados e lógica de negócio
-- **Arquivos**:
-  - `ProdutoModel.js`: CRUD de produtos
-  - `ClienteModel.js`: CRUD de clientes
-
-### **View (Visão)**
-
-- **Localização**: API REST (JSON responses)
-- **Responsabilidade**: Apresentação dos dados
-- **Formato**: Respostas JSON estruturadas
-
-### **Controller (Controlador)**
-
-- **Localização**: `src/controllers/`
-- **Responsabilidade**: Lógica de controle (sem validações)
-- **Arquivos**:
-  - `ProdutoController.js`: Controla operações de produtos
-  - `ClienteController.js`: Controla operações de clientes
-
-### **🆕 Validators (Validadores)**
-
-- **Localização**: `src/validators/`
-- **Responsabilidade**: Validação de requests e dados
-- **Arquivos**:
-  - `BaseValidator.js`: Métodos de validação reutilizáveis
-  - `ProdutoValidator.js`: Validações específicas de produtos
-  - `ClienteValidator.js`: Validações específicas de clientes
-
-### **Utilitários**
-
-- **Localização**: `src/utils/`
-- **Responsabilidade**: Funções auxiliares
-- **Arquivos**:
-  - `validators.js`: Funções legadas (mantido para compatibilidade)
-
-### **Configuração**
-
-- **Localização**: `src/config/`
-- **Responsabilidade**: Configurações da aplicação
-- **Arquivos**:
-  - `database.js`: Configuração do banco SQLite
-
-## 🔧 Fluxo de Validação
-
-```
-Request → Validator → Controller → Model → Response
-    ↓         ↓           ↓         ↓
-   HTTP   Valida e    Lógica de  Operações
-   Body   Sanitiza   Controle   no Banco
-```
-
-### Exemplo de uso nos Controllers:
-
-```javascript
-// Antes (validação no controller)
-static async create(req, res) {
-  const { nome, preco } = req.body;
-  if (!nome) return res.status(400).json({error: 'Nome obrigatório'});
-  // ... mais validações
-}
-
-// Depois (validação separada)
-static async create(req, res) {
-  const validation = ProdutoValidator.validateCreate(req);
-  if (!validation.isValid) {
-    return res.status(validation.error.status).json({
-      error: validation.error.message
-    });
-  }
-  // Controller foca apenas na lógica de negócio
-}
-```
-
-## 🏗️ Arquitetura MVC
-
-### **Model (Modelo)**
-
-- **Localização**: `src/models/`
-- **Responsabilidade**: Gerenciar dados e lógica de negócio
-- **Arquivos**:
-  - `ProdutoModel.js`: CRUD de produtos
-  - `ClienteModel.js`: CRUD de clientes
-
-### **View (Visão)**
-
-- **Localização**: API REST (JSON responses)
-- **Responsabilidade**: Apresentação dos dados
-- **Formato**: Respostas JSON estruturadas
-
-### **Controller (Controlador)**
-
-- **Localização**: `src/controllers/`
-- **Responsabilidade**: Lógica de controle e validações
-- **Arquivos**:
-  - `ProdutoController.js`: Controla operações de produtos
-  - `ClienteController.js`: Controla operações de clientes
-
-### **Utilitários**
-
-- **Localização**: `src/utils/`
-- **Responsabilidade**: Funções auxiliares e validações
-- **Arquivos**:
-  - `validators.js`: Validações reutilizáveis
-
-### **Configuração**
-
-- **Localização**: `src/config/`
-- **Responsabilidade**: Configurações da aplicação
-- **Arquivos**:
-  - `database.js`: Configuração do banco SQLite
-
 ## ✅ Checklist do Teste Técnico
 
 - [x] Criar uma API em Node.js usando Express.js
@@ -310,18 +194,13 @@ static async create(req, res) {
 
 ## 🧪 Testando a API
 
-### Testando com Node.js (Recomendado)
+### Teste automatizado da aplicação utilizando Jest
 
 ```bash
-# Testar nova estrutura de validação
-node test-validators.js
-
-# Testar estrutura MVC
-node test-mvc-api.js
-
-# Testar versão original
-node test-api.js
+npm test
 ```
+
+### Testes manuais utilizando cURL
 
 **Cadastrar um produto:**
 
@@ -350,10 +229,6 @@ curl -X POST http://localhost:3000/clientes \
 ```bash
 curl http://localhost:3000/clientes
 ```
-
-## 🔍 Logs e Debugging
-
-A aplicação utiliza o Morgan para logs HTTP e console.log para logs de debug. Em caso de erros, verifique o terminal onde a aplicação está rodando.
 
 ## 📄 Licença
 

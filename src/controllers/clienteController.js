@@ -11,7 +11,7 @@ class ClienteController {
     try {
       ClienteValidator.validateCreate(req);
 
-      const cliente = await this.clienteService.create(req.body);
+      const cliente = await this.clienteService.create(req);
 
       return ApiResponse.created(res, cliente, "Cliente criado com sucesso");
     } catch (error) {

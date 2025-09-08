@@ -13,9 +13,9 @@ class ClienteRepository extends BaseRepository {
    * @param {Object} options - Opções de busca
    * @returns {Promise} - Promise com os clientes encontrados
    */
-  async findAll(options = {}) {
+  async getAll(options = {}) {
     const searchFields = ["nome", "email"];
-    const result = await super.findAll({
+    const result = await super.getAll({
       ...options,
       searchFields,
     });

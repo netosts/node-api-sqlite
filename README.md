@@ -99,15 +99,52 @@ npm start
 
 A API estará disponível em: `http://localhost:3000`
 
+## 🗄️ Populando o Banco de Dados (Opcional)
+
+Para facilitar os testes, você pode popular o banco com dados de exemplo:
+
+```bash
+npm run seed
+```
+
+Este comando irá criar dados de exemplo para produtos e clientes no banco de dados.
+
 ## 🧪 Testando a API
 
-### Teste automatizado da aplicação utilizando Jest
+### Testes Automatizados
+
+**Executar todos os testes:**
 
 ```bash
 npm test
 ```
 
-### Testes manuais utilizando cURL
+**Executar testes com cobertura:**
+
+```bash
+npm run test:coverage
+```
+
+**Executar testes específicos:**
+
+```bash
+# Testes unitários
+npm run test:unit
+
+# Testes de integração
+npm run test:integration
+
+# Testes end-to-end
+npm run test:e2e
+```
+
+**Executar testes em modo watch (desenvolvimento):**
+
+```bash
+npm run test:watch
+```
+
+### Testes Manuais com cURL
 
 **Cadastrar um produto:**
 
@@ -117,10 +154,23 @@ curl -X POST http://localhost:3000/produtos \
   -d '{"nome":"Notebook","preco":2500.00,"estoque":10}'
 ```
 
-**Listar produtos:**
+**Listar produtos (com paginação):**
 
 ```bash
+# Listar todos
 curl http://localhost:3000/produtos
+
+# Com paginação
+curl "http://localhost:3000/produtos?page=1&limit=5"
+
+# Com busca
+curl "http://localhost:3000/produtos?search=Notebook"
+```
+
+**Buscar produto por ID:**
+
+```bash
+curl http://localhost:3000/produtos/1
 ```
 
 **Cadastrar um cliente:**
@@ -131,8 +181,82 @@ curl -X POST http://localhost:3000/clientes \
   -d '{"nome":"João Silva","email":"joao@email.com"}'
 ```
 
-**Listar clientes:**
+**Listar clientes (com paginação):**
 
 ```bash
+# Listar todos
 curl http://localhost:3000/clientes
+
+# Com paginação
+curl "http://localhost:3000/clientes?page=1&limit=5"
+
+# Com busca
+curl "http://localhost:3000/clientes?search=João"
+```
+
+**Buscar cliente por ID:**
+
+```bash
+curl http://localhost:3000/clientes/1
+```
+
+**Atualizar um produto:**
+
+```bash
+curl -X PUT http://localhost:3000/produtos/1 \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Notebook Atualizado","preco":2800.00,"estoque":8}'
+```
+
+**Atualizar um cliente:**
+
+```bash
+curl -X PUT http://localhost:3000/clientes/1 \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"João Silva Santos","email":"joao.santos@email.com"}'
+```
+
+**Deletar um produto:**
+
+```bash
+curl -X DELETE http://localhost:3000/produtos/1
+```
+
+**Deletar um cliente:**
+
+```bash
+curl -X DELETE http://localhost:3000/clientes/1
+```
+
+## 📋 Scripts Disponíveis
+
+| Comando                    | Descrição                                 |
+| -------------------------- | ----------------------------------------- |
+| `npm start`                | Inicia o servidor de produção             |
+| `npm test`                 | Executa todos os testes                   |
+| `npm run test:unit`        | Executa apenas testes unitários           |
+| `npm run test:integration` | Executa apenas testes de integração       |
+| `npm run test:e2e`         | Executa apenas testes end-to-end          |
+| `npm run test:coverage`    | Executa testes com relatório de cobertura |
+| `npm run test:watch`       | Executa testes em modo watch              |
+| `npm run seed`             | Popula o banco com dados de exemplo       |
+
+## 🏗️ Estrutura do Projeto
+
+```
+node-api-sqlite/
+├── src/
+│   ├── config/          # Configurações (banco de dados)
+│   ├── controllers/     # Controladores das rotas
+│   ├── middleware/      # Middlewares (tratamento de erro)
+│   ├── models/          # Modelos de dados
+│   ├── repositories/    # Camada de acesso aos dados
+│   ├── routes/          # Definição das rotas
+│   ├── services/        # Lógica de negócio
+│   ├── tests/           # Testes automatizados
+│   ├── utils/           # Utilitários e helpers
+│   └── validators/      # Validações de entrada
+├── database/            # Banco SQLite e scripts
+├── scripts/             # Scripts utilitários
+└── package.json         # Dependências e scripts
 ```

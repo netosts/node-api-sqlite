@@ -12,10 +12,10 @@ class ProdutoValidator extends BaseValidator {
       body("preco")
         .isFloat({ min: 0 })
         .withMessage("Preço deve ser um número positivo"),
-      body("descricao")
+      body("estoque")
         .optional()
-        .isLength({ max: 500 })
-        .withMessage("Descrição deve ter no máximo 500 caracteres"),
+        .isInt({ min: 0 })
+        .withMessage("Estoque deve ser um número inteiro positivo"),
     ];
 
     validations.forEach((validation) => validation.run(req));
@@ -32,10 +32,10 @@ class ProdutoValidator extends BaseValidator {
         .optional()
         .isFloat({ min: 0 })
         .withMessage("Preço deve ser um número positivo"),
-      body("descricao")
+      body("estoque")
         .optional()
-        .isLength({ max: 500 })
-        .withMessage("Descrição deve ter no máximo 500 caracteres"),
+        .isInt({ min: 0 })
+        .withMessage("Estoque deve ser um número inteiro positivo"),
     ];
 
     validations.forEach((validation) => validation.run(req));

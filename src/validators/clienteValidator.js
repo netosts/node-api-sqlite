@@ -16,17 +16,6 @@ class ClienteValidator extends BaseValidator {
     super.validate(req);
   }
 
-  static validateId(req) {
-    const validations = [
-      param("id")
-        .isInt({ min: 1 })
-        .withMessage("ID deve ser um número inteiro positivo"),
-    ];
-
-    validations.forEach((validation) => validation.run(req));
-    super.validate(req);
-  }
-
   static validateUpdate(req) {
     const validations = [
       body("nome")

@@ -24,15 +24,6 @@ class ClienteRepository extends BaseRepository {
   }
 
   /**
-   * Buscar cliente por email
-   * @param {string} email - Email do cliente
-   * @returns {Promise} - Promise com o cliente encontrado
-   */
-  async findByEmail(email) {
-    return this.findWhere("email", email);
-  }
-
-  /**
    * Verificar se email já existe
    * @param {string} email - Email para verificar
    * @param {number} excludeId - ID para excluir da verificação

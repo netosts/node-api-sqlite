@@ -1,4 +1,4 @@
-const { validationResult } = require("express-validator");
+const { validationResult, param } = require("express-validator");
 
 class BaseValidator {
   static validate(req) {
@@ -9,6 +9,17 @@ class BaseValidator {
       error.details = errors.array();
       throw error;
     }
+  }
+
+  static validateId(req) {
+    const validations = [
+      param("id")
+        .isInt({ min: 1 })
+        .withMessage("ID deve ser um número inteiro positivo"),
+    ];
+
+    validations.forEach((validation) => validation.run(req));
+    this.validate(req);
   }
 }
 

@@ -3,3 +3,4 @@
 - [ ] Criar uma forma de reutilizar e padronizar mensagens de erro.
 - [ ] Produtos vinculados aos clientes (ex: histórico de compras).
 - [ ] Com produtos vinculados aos clientes, implementar verificação para evitar exclusão de clientes com produtos associados.
+- [ ] Melhorar sistema de pesquisa para suportar filtros avançados (ex: faixa de preço, data de criação, estoque).

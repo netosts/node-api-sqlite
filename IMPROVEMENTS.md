@@ -1,0 +1,5 @@
+- [ ] Adicionar injeção de dependência para facilitar testes e manutenção.
+- [ ] Implementar logging para monitorar operações e erros.
+- [ ] Criar uma forma de reutilizar e padronizar mensagens de erro.
+- [ ] Produtos vinculados aos clientes (ex: histórico de compras).
+- [ ] Com produtos vinculados aos clientes, implementar verificação para evitar exclusão de clientes com produtos associados.

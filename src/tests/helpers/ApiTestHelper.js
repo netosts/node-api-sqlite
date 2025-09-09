@@ -5,6 +5,23 @@ const app = require("../../../app");
  * Helper para testes de API
  */
 class ApiTestHelper {
+  constructor(app) {
+    this.app = app;
+  }
+
+  /**
+   * Criar produto
+   */
+  createProduto(data) {
+    return ApiTestHelper.post("/produtos", data);
+  }
+
+  /**
+   * Criar cliente
+   */
+  createCliente(data) {
+    return ApiTestHelper.post("/clientes", data);
+  }
   /**
    * Fazer requisição POST
    */

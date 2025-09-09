@@ -1,26 +1,19 @@
 const path = require("path");
 const fs = require("fs");
+const { initializeDatabase } = require("../config/database");
 
 // Configurar ambiente de teste
 process.env.NODE_ENV = "test";
 
-// Configurar banco de dados de teste
-const testDbPath = path.join(__dirname, "test-database.sqlite");
-
-// Limpar banco de teste antes de cada suíte de testes
+// Limpar qualquer banco de teste anterior
 beforeAll(async () => {
-  // Remover banco de teste se existir
-  if (fs.existsSync(testDbPath)) {
-    fs.unlinkSync(testDbPath);
-  }
+  // Inicializar banco de dados de teste
+  await initializeDatabase();
 });
 
-// Limpar banco de teste após todos os testes
+// Limpeza após todos os testes
 afterAll(async () => {
-  // Remover banco de teste
-  if (fs.existsSync(testDbPath)) {
-    fs.unlinkSync(testDbPath);
-  }
+  // Limpeza final
 });
 
 // Configurações globais para testes

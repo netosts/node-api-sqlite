@@ -50,11 +50,11 @@ const produtoFixtures = {
     estoque: -5,
   },
 
-  // Produto com dados inválidos
-  produtoDadosInvalidos: {
-    nome: 123,
-    preco: "abc",
-    estoque: "xyz",
+  // Produto com preço inválido
+  produtoPrecoInvalido: {
+    nome: "Produto Teste",
+    preco: -10,
+    estoque: 50,
   },
 
   // Produto com nome muito longo

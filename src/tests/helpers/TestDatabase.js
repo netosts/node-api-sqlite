@@ -6,7 +6,8 @@ const path = require("path");
  */
 class TestDatabase {
   constructor() {
-    this.dbPath = path.join(__dirname, "../test-database.sqlite");
+    // Usar banco em memória para testes
+    this.dbPath = ":memory:";
     this.db = null;
   }
 
@@ -23,11 +24,7 @@ class TestDatabase {
    */
   async teardown() {
     await this.disconnect();
-    // Remover arquivo de banco de teste
-    const fs = require("fs");
-    if (fs.existsSync(this.dbPath)) {
-      fs.unlinkSync(this.dbPath);
-    }
+    // Banco em memória é automaticamente removido ao desconectar
   }
 
   /**

@@ -1,75 +1,42 @@
 const ClienteService = require("../services/clienteService");
 const ApiResponse = require("../utils/apiResponse");
 const ClienteValidator = require("../validators/clienteValidator");
+const { asyncHandler } = require("../middleware/errorHandler");
 
 class ClienteController {
-  constructor() {
-    this.clienteService = new ClienteService();
-  }
+  static create = asyncHandler(async (req, res) => {
+    ClienteValidator.validateCreate(req);
+    const clienteService = new ClienteService();
+    const cliente = await clienteService.create(req);
+    return ApiResponse.created(res, cliente, "Cliente criado com sucesso");
+  });
 
-  static async create(req, res) {
-    try {
-      ClienteValidator.validateCreate(req);
+  static getAll = asyncHandler(async (req, res) => {
+    const clienteService = new ClienteService();
+    const result = await clienteService.getAll(req.query);
+    return ApiResponse.paginated(res, result, "Clientes obtidos com sucesso");
+  });
 
-      const cliente = await this.clienteService.create(req);
+  static find = asyncHandler(async (req, res) => {
+    ClienteValidator.validateId(req);
+    const clienteService = new ClienteService();
+    const cliente = await clienteService.find(req.params.id);
+    return ApiResponse.success(res, cliente, "Cliente encontrado com sucesso");
+  });
 
-      return ApiResponse.created(res, cliente, "Cliente criado com sucesso");
-    } catch (error) {
-      return ApiResponse.error(res, error);
-    }
-  }
+  static update = asyncHandler(async (req, res) => {
+    ClienteValidator.validateUpdate(req);
+    const clienteService = new ClienteService();
+    await clienteService.update(req.params.id, req.body);
+    return ApiResponse.success(res, null, "Cliente atualizado com sucesso");
+  });
 
-  static async getAll(req, res) {
-    try {
-      ClienteValidator.validateGetAll(req);
-
-      const result = await this.clienteService.getAll(req.query);
-
-      return ApiResponse.paginated(res, result, "Clientes obtidos com sucesso");
-    } catch (error) {
-      return ApiResponse.error(res, error);
-    }
-  }
-
-  static async find(req, res) {
-    try {
-      ClienteValidator.validateId(req);
-
-      const cliente = await this.clienteService.find(req.params.id);
-
-      return ApiResponse.success(
-        res,
-        cliente,
-        "Cliente encontrado com sucesso"
-      );
-    } catch (error) {
-      return ApiResponse.error(res, error);
-    }
-  }
-
-  static async update(req, res) {
-    try {
-      ClienteValidator.validateUpdate(req);
-
-      await this.clienteService.update(req.params.id, req.body);
-
-      return ApiResponse.success(res, null, "Cliente atualizado com sucesso");
-    } catch (error) {
-      return ApiResponse.error(res, error);
-    }
-  }
-
-  static async delete(req, res) {
-    try {
-      ClienteValidator.validateId(req);
-
-      await this.clienteService.delete(req.params.id);
-
-      return ApiResponse.success(res, null, "Cliente deletado com sucesso");
-    } catch (error) {
-      return ApiResponse.error(res, error);
-    }
-  }
+  static delete = asyncHandler(async (req, res) => {
+    ClienteValidator.validateId(req);
+    const clienteService = new ClienteService();
+    await clienteService.delete(req.params.id);
+    return ApiResponse.success(res, null, "Cliente deletado com sucesso");
+  });
 }
 
 module.exports = ClienteController;

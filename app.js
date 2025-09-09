@@ -9,6 +9,10 @@ var produtosRouter = require("./src/routes/produtoRoutes");
 var clientesRouter = require("./src/routes/clienteRoutes");
 
 const { initializeDatabase } = require("./src/config/database");
+const {
+  notFoundHandler,
+  errorHandler,
+} = require("./src/middleware/errorHandler");
 
 var app = express();
 
@@ -23,11 +27,15 @@ app.use("/", indexRouter);
 app.use("/produtos", produtosRouter);
 app.use("/clientes", clientesRouter);
 
+// Middlewares
+app.use(notFoundHandler);
+app.use(errorHandler);
+
 initializeDatabase().catch(console.error);
 
-app.use(function (req, res, next) {
-  next(createError(404));
-});
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
 
 app.use(function (err, req, res, next) {
   res.locals.message = err.message;

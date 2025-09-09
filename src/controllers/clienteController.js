@@ -5,9 +5,9 @@ const { asyncHandler } = require("../middleware/errorHandler");
 
 class ClienteController {
   static create = asyncHandler(async (req, res) => {
-    ClienteValidator.validateCreate(req);
+    await ClienteValidator.validateCreate(req);
     const clienteService = new ClienteService();
-    const cliente = await clienteService.create(req);
+    const cliente = await clienteService.create(req.body);
     return ApiResponse.created(res, cliente, "Cliente criado com sucesso");
   });
 
@@ -18,24 +18,24 @@ class ClienteController {
   });
 
   static find = asyncHandler(async (req, res) => {
-    ClienteValidator.validateId(req);
+    await ClienteValidator.validateId(req);
     const clienteService = new ClienteService();
     const cliente = await clienteService.find(req.params.id);
     return ApiResponse.success(res, cliente, "Cliente encontrado com sucesso");
   });
 
   static update = asyncHandler(async (req, res) => {
-    ClienteValidator.validateUpdate(req);
+    await ClienteValidator.validateUpdate(req);
     const clienteService = new ClienteService();
-    await clienteService.update(req.params.id, req.body);
-    return ApiResponse.success(res, null, "Cliente atualizado com sucesso");
+    const cliente = await clienteService.update(req.params.id, req.body);
+    return ApiResponse.success(res, cliente, "Cliente atualizado com sucesso");
   });
 
   static delete = asyncHandler(async (req, res) => {
-    ClienteValidator.validateId(req);
+    await ClienteValidator.validateId(req);
     const clienteService = new ClienteService();
-    await clienteService.delete(req.params.id);
-    return ApiResponse.success(res, null, "Cliente deletado com sucesso");
+    const cliente = await clienteService.delete(req.params.id);
+    return ApiResponse.success(res, cliente, "Cliente deletado com sucesso");
   });
 }
 

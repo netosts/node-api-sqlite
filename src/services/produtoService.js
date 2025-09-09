@@ -6,13 +6,13 @@ class ProdutoService {
     this.produtoRepository = new ProdutoRepository();
   }
 
-  async create(req) {
-    return await this.produtoRepository.create(req.body);
+  async create(data) {
+    return await this.produtoRepository.create(data);
   }
 
-  async getAll(req) {
+  async getAll(options) {
     const searchFields = ["nome"];
-    return await this.produtoRepository.getAll({ ...req.body, searchFields });
+    return await this.produtoRepository.getAll({ ...options, searchFields });
   }
 
   async find(id) {
@@ -23,13 +23,13 @@ class ProdutoService {
     return produto;
   }
 
-  async update(id, req) {
+  async update(id, data) {
     const produto = await this.produtoRepository.find(id);
     if (!produto) {
       throw new NotFoundError("Produto não encontrado");
     }
 
-    return await this.produtoRepository.update(id, req.body);
+    return await this.produtoRepository.update(id, data);
   }
 
   async delete(id) {

@@ -4,37 +4,38 @@ const ProdutoValidator = require("../validators/produtoValidator");
 const { asyncHandler } = require("../middleware/errorHandler");
 
 class ProdutoController {
-  constructor() {
-    this.produtoService = new ProdutoService();
-  }
-
   static create = asyncHandler(async (req, res) => {
-    ProdutoValidator.validateCreate(req);
-    const produto = await this.produtoService.create(req);
+    await ProdutoValidator.validateCreate(req);
+    const produtoService = new ProdutoService();
+    const produto = await produtoService.create(req.body);
     return ApiResponse.created(res, produto, "Produto criado com sucesso");
   });
 
   static getAll = asyncHandler(async (req, res) => {
-    const result = await this.produtoService.getAll(req.body);
+    const produtoService = new ProdutoService();
+    const result = await produtoService.getAll(req.query);
     return ApiResponse.paginated(res, result, "Produtos obtidos com sucesso");
   });
 
   static find = asyncHandler(async (req, res) => {
-    ProdutoValidator.validateId(req);
-    const produto = await this.produtoService.find(req.params.id);
+    await ProdutoValidator.validateId(req);
+    const produtoService = new ProdutoService();
+    const produto = await produtoService.find(req.params.id);
     return ApiResponse.success(res, produto, "Produto encontrado com sucesso");
   });
 
   static update = asyncHandler(async (req, res) => {
-    ProdutoValidator.validateUpdate(req);
-    await this.produtoService.update(req.params.id, req.body);
-    return ApiResponse.success(res, null, "Produto atualizado com sucesso");
+    await ProdutoValidator.validateUpdate(req);
+    const produtoService = new ProdutoService();
+    const produto = await produtoService.update(req.params.id, req.body);
+    return ApiResponse.success(res, produto, "Produto atualizado com sucesso");
   });
 
   static delete = asyncHandler(async (req, res) => {
-    ProdutoValidator.validateId(req);
-    await this.produtoService.delete(req.params.id);
-    return ApiResponse.success(res, null, "Produto deletado com sucesso");
+    await ProdutoValidator.validateId(req);
+    const produtoService = new ProdutoService();
+    const produto = await produtoService.delete(req.params.id);
+    return ApiResponse.success(res, produto, "Produto deletado com sucesso");
   });
 }
 

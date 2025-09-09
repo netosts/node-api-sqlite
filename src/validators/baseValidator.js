@@ -1,25 +1,22 @@
 const { validationResult, param } = require("express-validator");
+const { ValidationError } = require("../utils/errors");
 
 class BaseValidator {
-  static validate(req) {
+  static async validate(req) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      const error = new Error("Dados de entrada inválidos");
-      error.status = 400;
-      error.details = errors.array();
-      throw error;
+      const errorMessages = errors.array().map((error) => error.msg);
+      throw new ValidationError(errorMessages.join(", "));
     }
   }
 
-  static validateId(req) {
-    const validations = [
-      param("id")
-        .isInt({ min: 1 })
-        .withMessage("ID deve ser um número inteiro positivo"),
-    ];
+  static async validateId(req) {
+    const validation = param("id")
+      .isInt({ min: 1 })
+      .withMessage("ID deve ser um número inteiro positivo");
 
-    validations.forEach((validation) => validation.run(req));
-    this.validate(req);
+    await validation.run(req);
+    await this.validate(req);
   }
 }
 

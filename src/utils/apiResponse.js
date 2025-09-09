@@ -88,7 +88,7 @@ class ApiResponse {
    * @param {Object} details - Detalhes da validação
    */
   static validationError(res, message = "Dados inválidos", details = null) {
-    return this.error(res, message, 400, details);
+    return this.error(res, null, message, 400, details);
   }
 
   /**
@@ -97,7 +97,7 @@ class ApiResponse {
    * @param {string} message - Mensagem de erro
    */
   static notFound(res, message = "Recurso não encontrado") {
-    return this.error(res, message, 404);
+    return this.error(res, null, message, 404);
   }
 
   /**
@@ -106,7 +106,7 @@ class ApiResponse {
    * @param {string} message - Mensagem de erro
    */
   static conflict(res, message = "Conflito de dados") {
-    return this.error(res, message, 409);
+    return this.error(res, null, message, 409);
   }
 
   /**
@@ -115,7 +115,7 @@ class ApiResponse {
    * @param {string} message - Mensagem de erro
    */
   static unauthorized(res, message = "Não autorizado") {
-    return this.error(res, message, 401);
+    return this.error(res, null, message, 401);
   }
 
   /**
@@ -124,7 +124,7 @@ class ApiResponse {
    * @param {string} message - Mensagem de erro
    */
   static forbidden(res, message = "Acesso negado") {
-    return this.error(res, message, 403);
+    return this.error(res, null, message, 403);
   }
 
   /**

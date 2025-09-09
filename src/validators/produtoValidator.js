@@ -2,7 +2,7 @@ const { body } = require("express-validator");
 const BaseValidator = require("./baseValidator");
 
 class ProdutoValidator extends BaseValidator {
-  static validateCreate(req) {
+  static async validateCreate(req) {
     const validations = [
       body("nome")
         .notEmpty()
@@ -18,11 +18,11 @@ class ProdutoValidator extends BaseValidator {
         .withMessage("Estoque deve ser um número inteiro positivo"),
     ];
 
-    validations.forEach((validation) => validation.run(req));
-    super.validate(req);
+    await Promise.all(validations.map((validation) => validation.run(req)));
+    await super.validate(req);
   }
 
-  static validateUpdate(req) {
+  static async validateUpdate(req) {
     const validations = [
       body("nome")
         .optional()
@@ -38,8 +38,12 @@ class ProdutoValidator extends BaseValidator {
         .withMessage("Estoque deve ser um número inteiro positivo"),
     ];
 
-    validations.forEach((validation) => validation.run(req));
-    super.validate(req);
+    await Promise.all(validations.map((validation) => validation.run(req)));
+    await super.validate(req);
+  }
+
+  static async validateId(req) {
+    return await super.validateId(req);
   }
 }
 

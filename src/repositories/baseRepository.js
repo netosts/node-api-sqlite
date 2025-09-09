@@ -1,4 +1,4 @@
-const { db } = require("../config/database");
+const { getDatabase } = require("../config/database");
 
 class BaseRepository {
   /**
@@ -47,7 +47,7 @@ class BaseRepository {
       sql += ` ORDER BY ${orderBy} ${orderDirection.toUpperCase()} LIMIT ? OFFSET ?`;
       const queryParams = [...params, parseInt(limit), offset];
 
-      db.all(sql, queryParams, (err, records) => {
+      getDatabase().all(sql, queryParams, (err, records) => {
         if (err) {
           reject(err);
           return;
@@ -60,7 +60,7 @@ class BaseRepository {
           });
         }
 
-        db.get(countSql, countParams, (err, result) => {
+        getDatabase().get(countSql, countParams, (err, result) => {
           if (err) {
             reject(err);
             return;
@@ -94,7 +94,7 @@ class BaseRepository {
     return new Promise((resolve, reject) => {
       const sql = `SELECT * FROM ${this.tableName} WHERE id = ?`;
 
-      db.get(sql, [id], (err, record) => {
+      getDatabase().get(sql, [id], (err, record) => {
         if (err) {
           reject(err);
         } else {
@@ -114,7 +114,7 @@ class BaseRepository {
     return new Promise((resolve, reject) => {
       const sql = `SELECT * FROM ${this.tableName} WHERE ${field} = ?`;
 
-      db.get(sql, [value], (err, record) => {
+      getDatabase().get(sql, [value], (err, record) => {
         if (err) {
           reject(err);
         } else {
@@ -134,7 +134,7 @@ class BaseRepository {
     return new Promise((resolve, reject) => {
       const sql = `SELECT * FROM ${this.tableName} WHERE ${field} = ?`;
 
-      db.all(sql, [value], (err, records) => {
+      getDatabase().all(sql, [value], (err, records) => {
         if (err) {
           reject(err);
         } else {
@@ -158,7 +158,7 @@ class BaseRepository {
 
       const sql = `INSERT INTO ${this.tableName} (${fieldNames}) VALUES (${placeholders})`;
 
-      db.run(sql, values, function (err) {
+      getDatabase().run(sql, values, function (err) {
         if (err) {
           reject(err);
         } else {
@@ -186,7 +186,7 @@ class BaseRepository {
 
       const sql = `UPDATE ${this.tableName} SET ${setClause} WHERE id = ?`;
 
-      db.run(sql, values, function (err) {
+      getDatabase().run(sql, values, function (err) {
         if (err) {
           reject(err);
         } else {
@@ -208,7 +208,7 @@ class BaseRepository {
     return new Promise((resolve, reject) => {
       const sql = `DELETE FROM ${this.tableName} WHERE id = ?`;
 
-      db.run(sql, [id], function (err) {
+      getDatabase().run(sql, [id], function (err) {
         if (err) {
           reject(err);
         } else {
@@ -230,7 +230,7 @@ class BaseRepository {
     return new Promise((resolve, reject) => {
       const sql = `SELECT 1 FROM ${this.tableName} WHERE id = ? LIMIT 1`;
 
-      db.get(sql, [id], (err, record) => {
+      getDatabase().get(sql, [id], (err, record) => {
         if (err) {
           reject(err);
         } else {
@@ -259,7 +259,7 @@ class BaseRepository {
 
       sql += ` LIMIT 1`;
 
-      db.get(sql, params, (err, record) => {
+      getDatabase().get(sql, params, (err, record) => {
         if (err) {
           reject(err);
         } else {

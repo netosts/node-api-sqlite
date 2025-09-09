@@ -6,20 +6,18 @@ class ClienteService {
     this.clienteRepository = new ClienteRepository();
   }
 
-  async create(req) {
-    const emailExists = await this.clienteRepository.emailExists(
-      req.body.email
-    );
+  async create(data) {
+    const emailExists = await this.clienteRepository.emailExists(data.email);
     if (emailExists) {
       throw new ConflictError("Este email já está cadastrado");
     }
 
-    return await this.clienteRepository.create(req.body);
+    return await this.clienteRepository.create(data);
   }
 
-  async getAll(req) {
+  async getAll(options) {
     const searchFields = ["nome", "email"];
-    return await this.clienteRepository.getAll({ ...req.body, searchFields });
+    return await this.clienteRepository.getAll({ ...options, searchFields });
   }
 
   async find(id) {
@@ -30,15 +28,15 @@ class ClienteService {
     return cliente;
   }
 
-  async update(id, req) {
+  async update(id, data) {
     const cliente = await this.clienteRepository.find(id);
     if (!cliente) {
       throw new NotFoundError("Cliente não encontrado");
     }
 
-    if (req.body.email) {
+    if (data.email) {
       const emailExists = await this.clienteRepository.emailExists(
-        req.body.email,
+        data.email,
         id
       );
       if (emailExists) {
@@ -48,7 +46,7 @@ class ClienteService {
       }
     }
 
-    return await this.clienteRepository.update(id, req.body);
+    return await this.clienteRepository.update(id, data);
   }
 
   async delete(id) {

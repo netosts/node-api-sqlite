@@ -1,73 +1,41 @@
 /**
- * Classe base para erros customizados da aplicação
+ * Erro base para erros operacionais da aplicação
  */
 class AppError extends Error {
-  constructor(message, statusCode = 500) {
+  constructor(message, statusCode = 500, isOperational = true) {
     super(message);
     this.statusCode = statusCode;
-    this.isOperational = true;
+    this.isOperational = isOperational;
+    this.name = this.constructor.name;
 
     Error.captureStackTrace(this, this.constructor);
   }
 }
 
 /**
- * Erro de validação (400)
+ * Erro específico para validação de dados
  */
 class ValidationError extends AppError {
   constructor(message) {
-    super(message, 400);
-    this.name = "ValidationError";
+    super(message, 400, true);
   }
 }
 
 /**
- * Erro de não encontrado (404)
+ * Erro para recursos não encontrados
  */
 class NotFoundError extends AppError {
   constructor(message = "Recurso não encontrado") {
-    super(message, 404);
-    this.name = "NotFoundError";
+    super(message, 404, true);
   }
 }
 
 /**
- * Erro de conflito (409)
+ * Erro para conflitos (ex: email já existe)
  */
 class ConflictError extends AppError {
   constructor(message) {
-    super(message, 409);
-    this.name = "ConflictError";
-  }
-}
-
-/**
- * Erro de autorização (401)
- */
-class UnauthorizedError extends AppError {
-  constructor(message = "Não autorizado") {
-    super(message, 401);
-    this.name = "UnauthorizedError";
-  }
-}
-
-/**
- * Erro de acesso negado (403)
- */
-class ForbiddenError extends AppError {
-  constructor(message = "Acesso negado") {
-    super(message, 403);
-    this.name = "ForbiddenError";
-  }
-}
-
-/**
- * Erro de bad request (400)
- */
-class BadRequestError extends AppError {
-  constructor(message) {
-    super(message, 400);
-    this.name = "BadRequestError";
+    super(message, 409, true);
   }
 }
 
@@ -76,7 +44,4 @@ module.exports = {
   ValidationError,
   NotFoundError,
   ConflictError,
-  UnauthorizedError,
-  ForbiddenError,
-  BadRequestError,
 };

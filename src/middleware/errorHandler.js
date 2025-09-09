@@ -1,4 +1,4 @@
-const { AppError } = require("../utils/errors");
+const { AppError, ValidationError } = require("../utils/errors");
 const ApiResponse = require("../utils/apiResponse");
 
 /**
@@ -18,46 +18,55 @@ const errorHandler = (error, req, res, next) => {
     return next(error);
   }
 
+  // Erro de validação customizado
+  if (error instanceof ValidationError) {
+    return ApiResponse.error(res, error, error.message, error.statusCode);
+  }
+
   // Erro operacional customizado
   if (error instanceof AppError) {
-    return ApiResponse.error(res, error.message, error.statusCode);
+    return ApiResponse.error(res, error, error.message, error.statusCode);
   }
 
   // Erro de validação do SQLite (email duplicado, etc.)
   if (error.message && error.message.includes("UNIQUE constraint failed")) {
-    if (error.message.includes("email")) {
-      return ApiResponse.conflict(res, "Este email já está cadastrado");
-    }
-    return ApiResponse.conflict(res, "Dados duplicados não permitidos");
+    return ApiResponse.error(res, error, "Este email já está cadastrado", 409);
   }
 
   // Erro de sintaxe SQL
   if (error.message && error.message.includes("SQLITE_")) {
-    return ApiResponse.error(res, "Erro no banco de dados", 500);
+    return ApiResponse.error(
+      res,
+      error,
+      "Erro na operação do banco de dados",
+      500
+    );
   }
 
   // Erro de validação do Express Validator
   if (error.array && typeof error.array === "function") {
-    const validationErrors = error.array();
-    return ApiResponse.validationError(
-      res,
-      "Dados inválidos",
-      validationErrors
-    );
+    const errors = error.array();
+    const errorMessages = errors.map((err) => err.msg).join(", ");
+    return ApiResponse.error(res, error, errorMessages, 400);
   }
 
   // Erro de JSON malformado
   if (error instanceof SyntaxError && error.status === 400 && "body" in error) {
-    return ApiResponse.validationError(res, "JSON malformado na requisição");
+    return ApiResponse.error(
+      res,
+      error,
+      "JSON inválido no corpo da requisição",
+      400
+    );
   }
 
   // Erro 404 - Rota não encontrada
   if (error.status === 404) {
-    return ApiResponse.notFound(res, "Rota não encontrada");
+    return ApiResponse.notFound(res, "Recurso não encontrado");
   }
 
   // Erro genérico do servidor
-  return ApiResponse.error(res, "Erro interno do servidor", 500);
+  return ApiResponse.error(res, error, "Erro interno do servidor", 500);
 };
 
 /**
@@ -74,8 +83,12 @@ const notFoundHandler = (req, res, next) => {
  * Wrapper para funções async que captura erros automaticamente
  */
 const asyncHandler = (fn) => {
-  return (req, res, next) => {
-    Promise.resolve(fn(req, res, next)).catch(next);
+  return async (req, res, next) => {
+    try {
+      await fn(req, res, next);
+    } catch (error) {
+      next(error);
+    }
   };
 };
 

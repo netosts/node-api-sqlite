@@ -2,19 +2,39 @@ const sqlite3 = require("sqlite3").verbose();
 const path = require("path");
 
 // Caminho para o arquivo do banco de dados
-const dbPath = path.join(__dirname, "../../database", "database.sqlite");
+let dbPath;
+let db;
 
-// Criar conexão com o banco
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error("Erro ao conectar com o banco de dados:", err.message);
-  } else {
-    console.log("Conectado ao banco de dados SQLite.");
-  }
-});
+if (process.env.NODE_ENV === "test") {
+  // Para testes, usar banco em memória
+  dbPath = ":memory:";
+} else {
+  dbPath = path.join(__dirname, "../../database", "database.sqlite");
+}
+
+// Função para criar conexão
+const createConnection = () => {
+  return new Promise((resolve, reject) => {
+    db = new sqlite3.Database(dbPath, (err) => {
+      if (err) {
+        console.error("Erro ao conectar com o banco de dados:", err.message);
+        reject(err);
+      } else {
+        if (process.env.NODE_ENV !== "test") {
+          console.log("Conectado ao banco de dados SQLite.");
+        }
+        resolve();
+      }
+    });
+  });
+};
 
 // Função para inicializar as tabelas
-const initializeDatabase = () => {
+const initializeDatabase = async () => {
+  if (!db) {
+    await createConnection();
+  }
+
   return new Promise((resolve, reject) => {
     db.serialize(() => {
       // Criar tabela produtos
@@ -33,7 +53,9 @@ const initializeDatabase = () => {
             console.error("Erro ao criar tabela produtos:", err.message);
             reject(err);
           } else {
-            console.log("Tabela produtos criada/verificada com sucesso.");
+            if (process.env.NODE_ENV !== "test") {
+              console.log("Tabela produtos criada/verificada com sucesso.");
+            }
           }
         }
       );
@@ -53,7 +75,9 @@ const initializeDatabase = () => {
             console.error("Erro ao criar tabela clientes:", err.message);
             reject(err);
           } else {
-            console.log("Tabela clientes criada/verificada com sucesso.");
+            if (process.env.NODE_ENV !== "test") {
+              console.log("Tabela clientes criada/verificada com sucesso.");
+            }
             resolve();
           }
         }
@@ -62,7 +86,14 @@ const initializeDatabase = () => {
   });
 };
 
+// Função para obter a instância do banco
+const getDatabase = () => {
+  return db;
+};
+
 module.exports = {
-  db,
+  db: () => db,
   initializeDatabase,
+  getDatabase,
+  createConnection,
 };

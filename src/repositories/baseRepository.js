@@ -157,14 +157,22 @@ class BaseRepository {
       const values = fields.map((field) => data[field]);
 
       const sql = `INSERT INTO ${this.tableName} (${fieldNames}) VALUES (${placeholders})`;
+      const db = getDatabase();
+      const tableName = this.tableName;
 
-      getDatabase().run(sql, values, function (err) {
+      db.run(sql, values, function (err) {
         if (err) {
           reject(err);
         } else {
-          resolve({
-            id: this.lastID,
-            ...data,
+          const insertedId = this.lastID;
+          // Fetch the complete record after insertion
+          const selectSql = `SELECT * FROM ${tableName} WHERE id = ?`;
+          db.get(selectSql, [insertedId], (selectErr, record) => {
+            if (selectErr) {
+              reject(selectErr);
+            } else {
+              resolve(record);
+            }
           });
         }
       });
@@ -185,14 +193,21 @@ class BaseRepository {
       values.push(id);
 
       const sql = `UPDATE ${this.tableName} SET ${setClause} WHERE id = ?`;
+      const db = getDatabase();
+      const tableName = this.tableName;
 
-      getDatabase().run(sql, values, function (err) {
+      db.run(sql, values, function (err) {
         if (err) {
           reject(err);
         } else {
-          resolve({
-            id,
-            changes: this.changes,
+          // After updating, fetch the updated record
+          const selectSql = `SELECT * FROM ${tableName} WHERE id = ?`;
+          db.get(selectSql, [id], (selectErr, record) => {
+            if (selectErr) {
+              reject(selectErr);
+            } else {
+              resolve(record);
+            }
           });
         }
       });

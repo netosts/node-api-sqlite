@@ -11,8 +11,7 @@ class ProdutoService {
   }
 
   async getAll(options) {
-    const searchFields = ["nome"];
-    return await this.produtoRepository.getAll({ ...options, searchFields });
+    return await this.produtoRepository.getAll(options);
   }
 
   async find(id) {

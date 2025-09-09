@@ -114,9 +114,7 @@ describe("ClienteService", () => {
       const resultado = await clienteService.getAll({});
 
       // Assert
-      expect(mockClienteRepository.getAll).toHaveBeenCalledWith({
-        searchFields: ["nome", "email"],
-      });
+      expect(mockClienteRepository.getAll).toHaveBeenCalledWith({});
       expect(resultado).toEqual(resultadoEsperado);
     });
 
@@ -146,10 +144,7 @@ describe("ClienteService", () => {
       const resultado = await clienteService.getAll(opcoes);
 
       // Assert
-      expect(mockClienteRepository.getAll).toHaveBeenCalledWith({
-        ...opcoes,
-        searchFields: ["nome", "email"],
-      });
+      expect(mockClienteRepository.getAll).toHaveBeenCalledWith(opcoes);
       expect(resultado).toEqual(resultadoEsperado);
     });
   });

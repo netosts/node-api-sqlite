@@ -15,7 +15,13 @@ class ClienteRepository extends BaseRepository {
    * @returns {Promise} - Promise com os clientes encontrados
    */
   async getAll(options = {}) {
-    const result = await super.getAll(options);
+    // Ensure searchFields for clients is always applied
+    const enhancedOptions = {
+      ...options,
+      searchFields: ["nome", "email"],
+    };
+
+    const result = await super.getAll(enhancedOptions);
 
     return {
       clientes: result.data,

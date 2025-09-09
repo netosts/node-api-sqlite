@@ -86,9 +86,7 @@ describe("ProdutoService", () => {
       const resultado = await produtoService.getAll({});
 
       // Assert
-      expect(mockProdutoRepository.getAll).toHaveBeenCalledWith({
-        searchFields: ["nome"],
-      });
+      expect(mockProdutoRepository.getAll).toHaveBeenCalledWith({});
       expect(resultado).toEqual(resultadoEsperado);
     });
 
@@ -118,10 +116,7 @@ describe("ProdutoService", () => {
       const resultado = await produtoService.getAll(opcoes);
 
       // Assert
-      expect(mockProdutoRepository.getAll).toHaveBeenCalledWith({
-        ...opcoes,
-        searchFields: ["nome"],
-      });
+      expect(mockProdutoRepository.getAll).toHaveBeenCalledWith(opcoes);
       expect(resultado).toEqual(resultadoEsperado);
     });
   });

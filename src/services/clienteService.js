@@ -16,8 +16,7 @@ class ClienteService {
   }
 
   async getAll(options) {
-    const searchFields = ["nome", "email"];
-    return await this.clienteRepository.getAll({ ...options, searchFields });
+    return await this.clienteRepository.getAll(options);
   }
 
   async find(id) {

@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../../../app");
 const { getDatabase } = require("../../config/database");
-const ApiTestHelper = require("../helpers/ApiTestHelper");
+const ApiTestHelper = require("../helpers/apiTestHelper");
 const produtoFixtures = require("../fixtures/produtoFixtures");
 
 describe("ProdutoController Integration Tests", () => {

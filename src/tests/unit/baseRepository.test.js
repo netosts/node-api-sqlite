@@ -105,7 +105,7 @@ describe("BaseRepository", () => {
 
     test("deve rejeitar em caso de erro no banco", async () => {
       const error = new Error("Database error");
-      mockDb.get.mockImplementationOnce((sql, params, callback) => {
+      mockDb.all.mockImplementationOnce((sql, params, callback) => {
         callback(error);
       });
 
@@ -182,6 +182,12 @@ describe("BaseRepository", () => {
     test("deve criar novo registro", async () => {
       const data = { field1: "novo_valor1", field2: "novo_valor2" };
       const mockLastID = 5;
+      const mockCreatedRecord = {
+        id: mockLastID,
+        field1: "novo_valor1",
+        field2: "novo_valor2",
+        data_criacao: "2023-01-01 00:00:00",
+      };
 
       mockDb.run.mockImplementationOnce(function (sql, params, callback) {
         expect(sql).toContain("INSERT INTO test_table");
@@ -194,12 +200,15 @@ describe("BaseRepository", () => {
         callback.call(this, null);
       });
 
+      mockDb.get.mockImplementationOnce((sql, params, callback) => {
+        expect(sql).toContain("SELECT * FROM test_table WHERE id = ?");
+        expect(params).toEqual([mockLastID]);
+        callback(null, mockCreatedRecord);
+      });
+
       const result = await repository.create(data);
 
-      expect(result).toEqual({
-        id: mockLastID,
-        ...data,
-      });
+      expect(result).toEqual(mockCreatedRecord);
     });
 
     test("deve ignorar campos não permitidos", async () => {
@@ -209,6 +218,13 @@ describe("BaseRepository", () => {
         campo_invalido: "valor_invalido",
       };
 
+      const mockCreatedRecord = {
+        id: 1,
+        field1: "valor1",
+        field2: "valor2",
+        data_criacao: "2023-01-01 00:00:00",
+      };
+
       mockDb.run.mockImplementationOnce(function (sql, params, callback) {
         expect(sql).not.toContain("campo_invalido");
         expect(params).toEqual(["valor1", "valor2"]);
@@ -216,7 +232,14 @@ describe("BaseRepository", () => {
         callback.call(this, null);
       });
 
-      await repository.create(data);
+      mockDb.get.mockImplementationOnce((sql, params, callback) => {
+        expect(sql).toContain("SELECT * FROM test_table WHERE id = ?");
+        expect(params).toEqual([1]);
+        callback(null, mockCreatedRecord);
+      });
+
+      const result = await repository.create(data);
+      expect(result).toEqual(mockCreatedRecord);
     });
 
     test("deve rejeitar em caso de erro", async () => {

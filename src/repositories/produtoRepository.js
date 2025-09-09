@@ -15,7 +15,13 @@ class ProdutoRepository extends BaseRepository {
    * @returns {Promise} - Promise com os produtos encontrados
    */
   async getAll(options = {}) {
-    const result = await super.getAll(options);
+    // Ensure searchFields for products is always applied
+    const enhancedOptions = {
+      ...options,
+      searchFields: ["nome"],
+    };
+
+    const result = await super.getAll(enhancedOptions);
 
     return {
       produtos: result.data,

@@ -1,3 +1,4 @@
+const ClienteModel = require("../models/clienteModel");
 const BaseRepository = require("./baseRepository");
 
 /**
@@ -5,7 +6,7 @@ const BaseRepository = require("./baseRepository");
  */
 class ClienteRepository extends BaseRepository {
   constructor() {
-    super("clientes", ["nome", "email"]);
+    super(ClienteModel.tableName, ClienteModel.fields);
   }
 
   /**
@@ -14,11 +15,7 @@ class ClienteRepository extends BaseRepository {
    * @returns {Promise} - Promise com os clientes encontrados
    */
   async getAll(options = {}) {
-    const searchFields = ["nome", "email"];
-    const result = await super.getAll({
-      ...options,
-      searchFields,
-    });
+    const result = await super.getAll(options);
 
     return {
       clientes: result.data,
@@ -32,7 +29,7 @@ class ClienteRepository extends BaseRepository {
    * @returns {Promise} - Promise com o cliente encontrado
    */
   async findByEmail(email) {
-    return this.findByField("email", email);
+    return this.findWhere("email", email);
   }
 
   /**
@@ -42,7 +39,7 @@ class ClienteRepository extends BaseRepository {
    * @returns {Promise<boolean>} - Promise com resultado da verificação
    */
   async emailExists(email, excludeId = null) {
-    return this.existsByField("email", email, excludeId);
+    return this.existsWhere("email", email, excludeId);
   }
 }
 

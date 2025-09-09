@@ -35,7 +35,7 @@ class ClienteController {
     try {
       ClienteValidator.validateId(req);
 
-      const cliente = await this.clienteService.findById(req.params.id);
+      const cliente = await this.clienteService.find(req.params.id);
 
       return ApiResponse.success(
         res,

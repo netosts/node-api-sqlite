@@ -110,7 +110,7 @@ class BaseRepository {
    * @param {any} value - Valor a ser buscado
    * @returns {Promise} - Promise com o registro encontrado
    */
-  async findByField(field, value) {
+  async findWhere(field, value) {
     return new Promise((resolve, reject) => {
       const sql = `SELECT * FROM ${this.tableName} WHERE ${field} = ?`;
 
@@ -130,7 +130,7 @@ class BaseRepository {
    * @param {any} value - Valor a ser buscado
    * @returns {Promise} - Promise com os registros encontrados
    */
-  async getByField(field, value) {
+  async getWhere(field, value) {
     return new Promise((resolve, reject) => {
       const sql = `SELECT * FROM ${this.tableName} WHERE ${field} = ?`;
 
@@ -247,7 +247,7 @@ class BaseRepository {
    * @param {number} excludeId - ID para excluir da verificação (útil para updates)
    * @returns {Promise<boolean>} - Promise com resultado da verificação
    */
-  async existsByField(field, value, excludeId = null) {
+  async existsWhere(field, value, excludeId = null) {
     return new Promise((resolve, reject) => {
       let sql = `SELECT 1 FROM ${this.tableName} WHERE ${field} = ?`;
       let params = [value];

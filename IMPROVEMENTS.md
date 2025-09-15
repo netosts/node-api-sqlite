@@ -4,3 +4,5 @@
 - [ ] Produtos vinculados aos clientes (ex: histórico de compras).
 - [ ] Com produtos vinculados aos clientes, implementar verificação para evitar exclusão de clientes com produtos associados.
 - [ ] Melhorar sistema de pesquisa para suportar filtros avançados (ex: faixa de preço, data de criação, estoque).
+- [ ] Encontrar falhas de segurança e prevenir ataques comuns (ex: SQL Injection, XSS).
+- [ ] Implementar Rate limiter e Request size limiter para prevenir abusos e ataques DoS.
